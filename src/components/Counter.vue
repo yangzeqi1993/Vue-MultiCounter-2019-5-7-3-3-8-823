@@ -17,28 +17,23 @@
             counter:Number
         },
 
-        data(){
-            return{
-                counterIn:this.counter
-            }
-        },
 
         methods:{
             _add: function (){
-                this.counterIn ++;
-                this.returnCounter();
+                let addNum = 1;
+                this.returnCounter(addNum);
             },
 
             _minus: function (){
-                this.counterIn --;
-                this.returnCounter();
+                let minusNum = -1;
+                this.returnCounter(minusNum);
             },
 
-            returnCounter(){
+            returnCounter(num){
                 this.$emit('update',
                     {
-                        index:this.index,
-                        value:this.counterIn
+                        index: this.index,
+                        value: this.counter + num
                       }
                 );
             }

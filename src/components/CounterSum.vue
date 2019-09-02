@@ -1,6 +1,6 @@
 <template>
     <div class="counter">
-        <span>111</span>
+        <span>此组件没用哦</span>
     </div>
 </template>
 
