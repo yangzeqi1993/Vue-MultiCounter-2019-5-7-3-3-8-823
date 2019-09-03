@@ -3,11 +3,14 @@
         <label><input type="number" v-model="counterNum" @input="countersInit"></label>
         <ol>
             <li>
-                 <Counter v-for="n in getNumber(counterNum)" v-bind:key="n"
-                          v-bind:index="n" v-bind:counter="counters[n-1]" v-on:update="numTotal"/>
+                 <Counter v-for="n in getNumber(counterNum)"
+                          v-bind:key="n"
+                          v-bind:index="n"
+                          v-bind:counter="counters[n-1]"
+                          v-on:update="updateCounters"/>
             </li>
         </ol>
-        <p class="number">sum:{{sum}}</p>
+        <p class="number">sum:{{getSum()}}</p>
     </div>
 </template>
 
@@ -25,7 +28,6 @@
             return{
                 counterNum: 0,
                 counters:[],
-                sum:0
             }
         },
 
@@ -35,11 +37,12 @@
             },
 
             countersInit(){
-                this.counters=[];
-                if(this.isNumber(this.counterNum)){
-                    for(let i=1; i<=this.counterNum; i++){
-                        this.counters.push(i);
-                    }
+                let counterNum = this.getNumber();
+                while(counterNum > this.counters.length){
+                    this.counters.push(this.counters.length+1)
+                }
+                while(counterNum < this.counters.length){
+                    this.counters.pop();
                 }
                 this.getSum();
             },
@@ -49,19 +52,27 @@
                     return parseInt(this.counterNum);
                 }else {
                     this.counterNum = 0;
-                    this.sum = 0;
+                    this.getSum();
                     return this.counterNum;
                 }
             },
-            numTotal(data){
-                this.counters[data.index-1] = data.value;
+
+            updateCounters(data){
+                let oldCounters = this.counters;
+                oldCounters[data.index-1] = data.value;
+                this.counters = [];
+                for(let i=0; i<oldCounters.length; i++){
+                    this.counters.push(oldCounters[i]);
+                }
                 this.getSum();
             },
+
             getSum(){
-                this.sum = 0;
+                let sum = 0;
                 for(let i=0; i<this.counters.length;i++){
-                    this.sum+=this.counters[i];
+                    sum+=this.counters[i];
                 }
+                return sum;
             }
         }
 
